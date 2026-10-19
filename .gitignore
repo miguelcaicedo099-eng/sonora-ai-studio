@@ -37,3 +37,6 @@ Thumbs.db
 *.wav
 scratch/
 temp/
+
+.vercel
+.env*
