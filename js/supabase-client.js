@@ -10,8 +10,8 @@ class SonoraSupabaseClient {
     this.isConfigured = false;
 
     // Default configuration (can be injected via environment or window.SONORA_CONFIG)
-    this.supabaseUrl = (window.SONORA_CONFIG && window.SONORA_CONFIG.SUPABASE_URL) || localStorage.getItem('sonora_supabase_url') || '';
-    this.supabaseAnonKey = (window.SONORA_CONFIG && window.SONORA_CONFIG.SUPABASE_ANON_KEY) || localStorage.getItem('sonora_supabase_anon_key') || '';
+    this.supabaseUrl = (window.SONORA_CONFIG && window.SONORA_CONFIG.SUPABASE_URL) || localStorage.getItem('sonora_supabase_url') || 'https://yrpmyllauldmfruiogic.supabase.co';
+    this.supabaseAnonKey = (window.SONORA_CONFIG && window.SONORA_CONFIG.SUPABASE_ANON_KEY) || localStorage.getItem('sonora_supabase_anon_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlycG15bGxhdWxkbWZydWlvZ2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNTYwMTMsImV4cCI6MjEwNzkzMjAxM30.cSvmyZ6Es-ionh7i0cKpydpO3VTZUXU6jewUEMPGrGE';
   }
 
   /**
