@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SONORA AI • Estudio de Creación Musical de Próxima Generación</title>
+  <meta name="description" content="SONORA AI: Crea canciones completas, instrumentales y letras con Inteligencia Artificial. Calidad 48kHz, separación de stems en vivo, pasarela WebPay, perfil administrador y chat VIP profesional.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b5cf6'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+</head>
+<body>
+
+  <!-- App Main Container -->
+  <div class="app-container">
+
+    <!-- Top Header Navigation -->
+    <header class="app-header">
+      <!-- Logo Branding -->
+      <div class="brand-section" onclick="window.location.reload()">
+        <div class="brand-logo">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <div class="brand-title">
+            SONORA <span class="brand-badge">v4.2 AI</span>
+          </div>
+          <span class="brand-subtitle">The Infinite Music Studio</span>
+        </div>
+      </div>
+
+      <!-- Center Search Bar -->
+      <div class="header-search">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Buscar canciones mundiales, artistas, estilos o prompts...">
+          <button id="search-clear-btn" class="search-clear-btn" title="Limpiar búsqueda">✕</button>
+        </div>
+      </div>
+
+      <!-- Right Header Actions (Credits, VIP Chat, WebPay & Admin Profile) -->
+      <div class="header-actions">
+        <!-- VIP Studio Chat Button -->
+        <button id="btn-header-vip" class="vip-header-btn" title="Acceso a Chat de Producción VIP con Productores Profesionales">
+          <span>👑 VIP Studio Chat</span>
+        </button>
+
+        <!-- WebPay Recharge Button -->
+        <button id="btn-header-webpay" class="webpay-header-btn" title="Recargar créditos con WebPay Plus">
+          <svg style="width: 15px; height: 15px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          <span>Recargar WebPay</span>
+        </button>
+
+        <!-- Credits Widget -->
+        <div class="credits-pill" id="credits-pill" title="Tokens disponibles (Haz clic para recargar)">
+          <svg class="credits-icon" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span class="credits-count" id="credits-count">50</span>
+          <span class="credits-label">Tokens</span>
+        </div>
+
+        <!-- User Profile Pill (Opens Admin / Profile Modal) -->
+        <div class="user-profile-btn" title="Ver mi Perfil y Panel Administrador">
+          <div class="user-avatar">M</div>
+          <span class="user-name">Miguel</span>
+          <span class="user-badge" style="background: linear-gradient(135deg, #ef4444, #f59e0b);">ADMIN</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="app-main">
+
+      <!-- Left Sidebar Navigation -->
+      <aside class="app-sidebar">
+        <div class="sidebar-nav-group">
+          <span class="sidebar-heading">Navegación</span>
+          <a class="nav-item active" data-tab="create" id="nav-create">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Crear Música</span>
+            <span class="nav-badge">Estudio</span>
+          </a>
+          <a class="nav-item" data-tab="explore" id="nav-explore">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+            <span>Música Mundial</span>
+            <span class="nav-badge" style="background: #10b981; color: white;">Top Hits</span>
+          </a>
+          <a class="nav-item" data-tab="library" id="nav-library">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span>Mis Creaciones</span>
+          </a>
+          <a class="nav-item" id="btn-sidebar-vip">
+            <span style="font-size: 16px;">👑</span>
+            <span>VIP Studio Chat</span>
+            <span class="nav-badge" style="background: linear-gradient(135deg, #f59e0b, #ec4899); color: white;">VIP</span>
+          </a>
+        </div>
+
+        <div class="sidebar-nav-group" style="margin-top: 14px;">
+          <span class="sidebar-heading">Tendencias Mundiales</span>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'cristiana\']').click()">
+            <span style="font-size: 16px;">🕊️</span>
+            <span>Cristiana & Worship</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'urbano\']').click()">
+            <span style="font-size: 16px;">🌴</span>
+            <span>Reggaeton & Trap</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'pop\']').click()">
+            <span style="font-size: 16px;">✨</span>
+            <span>Pop Global & K-Pop</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'electronica\']').click()">
+            <span style="font-size: 16px;">⚡</span>
+            <span>Brazilian Phonk & EDM</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'afrobeats\']').click()">
+            <span style="font-size: 16px;">🌍</span>
+            <span>Afrobeats & Amapiano</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'regional\']').click()">
+            <span style="font-size: 16px;">🎺</span>
+            <span>Corridos Tumbados</span>
+          </a>
+          <a class="nav-item" onclick="document.querySelector('.category-pill[data-category=\'lofi\']').click()">
+            <span style="font-size: 16px;">☕</span>
+            <span>Lo-Fi Chill & Relax</span>
+          </a>
+        </div>
+
+        <!-- WebPay Recharge Card in Sidebar -->
+        <div class="sidebar-upgrade-card">
+          <div class="upgrade-title">
+            <svg style="width: 16px; height: 16px; color: #10b981;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Recarga de Créditos</span>
+          </div>
+          <p class="upgrade-desc">50 créditos diarios de cortesía. Cada canción requiere 10 créditos.</p>
+          <button id="btn-sidebar-webpay" class="upgrade-btn" style="background: linear-gradient(135deg, #059669, #10b981);">
+            💳 Comprar Packs con WebPay
+          </button>
+        </div>
+      </aside>
+
+      <!-- Center & Right Content Split -->
+      <main class="content-area">
+
+        <!-- Creation Studio Column (Suno Dual Mode: Simple & Custom Studio) -->
+        <section class="studio-panel">
+          <!-- Studio Header & Mode Switch -->
+          <div class="studio-header">
+            <div class="studio-title-wrap">
+              <h2 class="studio-title">Estudio de Creación</h2>
+              <span class="engine-pill">Engine v4.2</span>
+            </div>
+
+            <!-- Mode Switcher -->
+            <div class="mode-toggle-wrap">
+              <button class="mode-btn active" id="btn-mode-simple">Simple</button>
+              <button class="mode-btn" id="btn-mode-custom">Personalizado</button>
+            </div>
+          </div>
+
+          <!-- PRIMARY STICKY CREATE BUTTON (Always 100% visible at the top of the Studio) -->
+          <div class="studio-action-top-bar">
+            <button id="btn-create-song-top" class="create-song-btn-primary" title="Generar 2 variaciones con Inteligencia Artificial">
+              <svg style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>⚡ Crear Canción</span>
+              <span class="create-cost-badge">10 Tokens</span>
+            </button>
+          </div>
+
+          <!-- Studio Body / Form Inputs -->
+          <div class="studio-body">
+
+            <!-- Mode 1: Simple Mode Controls -->
+            <div id="simple-controls" class="form-group">
+              <div class="form-label-row">
+                <label class="form-label" for="prompt-input">
+                  <svg style="width: 14px; height: 14px; color: var(--accent-purple);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Descripción de la Canción
+                </label>
+                <button type="button" class="form-action-link" id="btn-inspire-prompt">
+                  🎲 Inspirar Prompt
+                </button>
+              </div>
+              <textarea id="prompt-input" class="prompt-textarea" placeholder="Describe tu idea (ej: 'Reggaeton colombiano romántico estilo Medellín, 96 BPM, dembow suave con voces sensuales')..."></textarea>
+
+              <!-- Instrumental Toggle Switch -->
+              <div class="switch-row" style="margin-top: 6px;">
+                <div class="switch-label-wrap">
+                  <span class="switch-title">Solo Instrumental</span>
+                  <span class="switch-desc">Generar canción sin letra ni voces</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="instrumental-toggle">
+                  <span class="slider-round"></span>
+                </label>
+              </div>
+
+              <!-- Quick Style Tags -->
+              <div class="form-group" style="margin-top: 10px;">
+                <label class="form-label">Estilos Populares Rápidos</label>
+                <div class="style-pills-container">
+                  <button type="button" class="style-pill" data-style="Música Cristiana">🕊️ Worship Cristiano</button>
+                  <button type="button" class="style-pill" data-style="Trap Latino">Trap Latino 808</button>
+                  <button type="button" class="style-pill" data-style="Reggaeton">Reggaeton Dembow</button>
+                  <button type="button" class="style-pill" data-style="Brazilian Phonk">Brazilian Phonk</button>
+                  <button type="button" class="style-pill" data-style="Corridos Tumbados">Corridos Tumbados</button>
+                  <button type="button" class="style-pill" data-style="Afrobeats">Afrobeats</button>
+                  <button type="button" class="style-pill" data-style="Amapiano">Amapiano</button>
+                  <button type="button" class="style-pill" data-style="Synthpop 80s">Synthpop The Weeknd</button>
+                  <button type="button" class="style-pill" data-style="Tech House">Tech House Ibiza</button>
+                  <button type="button" class="style-pill" data-style="Lo-Fi Chill">Lo-Fi Chill</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mode 2: Custom Mode Controls (Full Custom Studio) -->
+            <div id="custom-controls" class="form-group" style="display: none; gap: 14px;">
+              
+              <!-- Song Title Input -->
+              <div class="form-group">
+                <label class="form-label" for="custom-title-input">
+                  🎵 Título de la Canción
+                </label>
+                <input type="text" id="custom-title-input" class="custom-input" placeholder="ej: Fuego en Medellín">
+              </div>
+
+              <!-- Music Style Input -->
+              <div class="form-group">
+                <label class="form-label" for="custom-style-input">
+                  🎛️ Estilo Musical, Instrumentos y BPM
+                </label>
+                <input type="text" id="custom-style-input" class="custom-input" placeholder="ej: Reggaeton, 96 bpm, dembow 808, sintetizadores cálidos...">
+              </div>
+
+              <!-- Custom Instrumental Toggle -->
+              <div class="switch-row">
+                <div class="switch-label-wrap">
+                  <span class="switch-title">Solo Instrumental</span>
+                  <span class="switch-desc">Sin voces neuronales (solo pista de instrumentos)</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="custom-instrumental-toggle">
+                  <span class="slider-round"></span>
+                </label>
+              </div>
+
+              <!-- Lyrics Editor -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label" for="lyrics-input">
+                    📝 Letra Estructurada de la Canción
+                  </label>
+                  <button type="button" class="form-action-link" id="btn-ai-lyrics">
+                    ✨ Letrista IA
+                  </button>
+                </div>
+                <textarea id="lyrics-input" class="prompt-textarea lyrics-textarea" placeholder="Escribe tu letra o pulsa 'Letrista IA':&#10;[Verse 1]&#10;La luna brilla sobre la ciudad...&#10;[Chorus]&#10;¡Siento el fuego en la pista de baile!"></textarea>
+
+                <!-- Structure Tag Inserters -->
+                <div class="lyrics-tags-bar">
+                  <button type="button" class="tag-insert-btn" data-tag="[Verse 1]">[Verse 1]</button>
+                  <button type="button" class="tag-insert-btn" data-tag="[Chorus]">[Chorus]</button>
+                  <button type="button" class="tag-insert-btn" data-tag="[Verse 2]">[Verse 2]</button>
+                  <button type="button" class="tag-insert-btn" data-tag="[Bridge]">[Bridge]</button>
+                  <button type="button" class="tag-insert-btn" data-tag="[Drop]">[Drop]</button>
+                  <button type="button" class="tag-insert-btn" data-tag="[Outro]">[Outro]</button>
+                </div>
+              </div>
+
+              <!-- Advanced Settings (Model & Vocal Style) -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                  <label class="form-label">Modelo Neural</label>
+                  <select id="model-select" class="custom-select">
+                    <option value="v4.2 Ultra">SONORA v4.2 (48kHz HQ)</option>
+                    <option value="v3.8 Fast">SONORA v3.8 (Turbo Melodic)</option>
+                    <option value="v4.0 Alpha">SONORA Hi-Fi Alpha</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tipo de Voz</label>
+                  <select id="vocal-select" class="custom-select">
+                    <option value="Femenina">Voz Femenina Real (Estudio)</option>
+                    <option value="Masculina">Voz Masculina Real (Estudio)</option>
+                    <option value="Dúo">Dúo Vocal Armónico</option>
+                    <option value="Góspel">Coro Góspel / Worship</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Generation Progress Box (Active during generation) -->
+            <div id="generation-status-card" class="generation-status-card">
+              <div class="gen-status-header">
+                <span class="gen-status-title">
+                  <span class="gen-pulse-dot"></span>
+                  Generando 2 variaciones de alta fidelidad...
+                </span>
+                <span style="font-size: 11px; color: var(--text-muted); font-family: monospace;">SONORA ENGINE</span>
+              </div>
+              <div id="gen-status-phase" class="gen-status-phase">Iniciando síntesis neural...</div>
+              <div class="gen-progress-track">
+                <div id="gen-progress-bar" class="gen-progress-bar"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Studio Create Button Footer -->
+          <div class="studio-footer">
+            <button id="btn-create-song" class="create-song-btn">
+              <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>Crear Canción</span>
+              <span class="create-cost-badge">⚡ 10 Tokens</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Right Feed & Discovery Section -->
+        <section class="feed-panel">
+
+          <!-- Featured Hero Banner -->
+          <div class="feed-hero-banner">
+            <div class="hero-content">
+              <span class="hero-tag">🔥 Hit Mundial • Catálogo 2026</span>
+              <h1 class="hero-title">Monaco en Llamas (Latin Trap 808)</h1>
+              <p class="hero-desc">Bajo 808 colosal, piano oscuro, ritmo potente y voces con autotune. Explora más de 20 éxitos de todos los rincones del mundo.</p>
+              <div class="hero-actions">
+                <button id="hero-play-btn" class="hero-play-btn">
+                  <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Reproducir Ahora
+                </button>
+                <button id="hero-create-btn" class="hero-secondary-btn">
+                  Crear Canción Similar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feed Navigation & Filtering Bar -->
+          <div class="feed-nav-bar">
+            <div class="feed-tabs">
+              <button class="feed-tab active" data-tab="explore">🔥 Música Mundial</button>
+              <button class="feed-tab" data-tab="trending">🏆 Top 50 Global</button>
+              <button class="feed-tab" data-tab="library">📚 Mis Creaciones</button>
+            </div>
+
+            <div class="feed-view-toggles">
+              <button id="btn-view-list" class="view-btn active" title="Vista en lista">
+                <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <button id="btn-view-grid" class="view-btn" title="Vista en tarjetas">
+                <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Category Filter Bar (All Worldwide Genres) -->
+          <div class="category-pills-bar">
+            <button class="category-pill active" data-category="all">🌐 Todos los Géneros</button>
+            <button class="category-pill" data-category="cristiana">🕊️ Cristiana & Worship</button>
+            <button class="category-pill" data-category="urbano">🌴 Urbano & Reggaeton</button>
+            <button class="category-pill" data-category="pop">✨ Pop Global & K-Pop</button>
+            <button class="category-pill" data-category="electronica">⚡ Phonk & Electrónica</button>
+            <button class="category-pill" data-category="afrobeats">🌍 Afrobeats & Amapiano</button>
+            <button class="category-pill" data-category="regional">🎺 Corridos & Regional</button>
+            <button class="category-pill" data-category="rock">🎸 Rock & Indie</button>
+            <button class="category-pill" data-category="cine">🎬 Cine & Anime OST</button>
+            <button class="category-pill" data-category="lofi">☕ Lo-Fi & Relax</button>
+          </div>
+
+          <!-- Dynamic Track List Container -->
+          <div class="tracks-container" id="tracks-container">
+            <!-- Dynamically populated by app.js -->
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- Sticky Bottom Audio Player (Suno Style + Improved Waveform & Stem Splitter) -->
+    <footer class="bottom-player">
+
+      <!-- Left Track Info -->
+      <div class="player-track-info">
+        <div class="player-thumb-wrap">
+          <canvas id="player-thumb-canvas" class="player-thumb-canvas"></canvas>
+        </div>
+        <div class="player-text-wrap">
+          <div id="player-title" class="player-song-title">Cargando canción...</div>
+          <div id="player-artist" class="player-song-artist">SONORA AI Studio</div>
+        </div>
+        <button id="player-like-btn" class="player-like-btn" title="Añadir a favoritos" onclick="window.sonoraApp.toggleLikeTrack(window.sonoraApp.audioEngine.currentTrack ? window.sonoraApp.audioEngine.currentTrack.id : '', event)">
+          <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Center Player Controls & Dynamic Waveform -->
+      <div class="player-center-controls">
+        <div class="player-buttons-row">
+          <button id="btn-player-shuffle" class="player-btn" title="Aleatorio">
+            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-2m-4 12l4-4m0 0l-4-4m4 4H10" />
+            </svg>
+          </button>
+          <button id="btn-player-prev" class="player-btn" title="Anterior">
+            <svg style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+            </svg>
+          </button>
+          <button id="btn-player-play" class="player-play-btn" title="Reproducir / Pausa">
+            <svg style="width: 22px; height: 22px;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <button id="btn-player-next" class="player-btn" title="Siguiente">
+            <svg style="width: 20px; height: 20px;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+            </svg>
+          </button>
+          <button id="btn-player-repeat" class="player-btn" title="Repetir pista">
+            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Interactive Waveform Progress Bar -->
+        <div class="waveform-progress-row">
+          <span id="time-current" class="player-time">00:00</span>
+          <div class="waveform-canvas-wrap" id="waveform-canvas-wrap">
+            <canvas id="waveform-canvas" class="waveform-canvas"></canvas>
+            <div id="waveform-hover-time" class="waveform-hover-time">00:00</div>
+          </div>
+          <span id="time-duration" class="player-time">02:45</span>
+        </div>
+      </div>
+
+      <!-- Right Utility Actions (Stems, Lyrics, Visualizer, Volume) -->
+      <div class="player-right-utilities">
+        <button id="btn-open-stems" class="utility-btn" title="Separar Pistas y Mezclador Live">
+          <svg style="width: 15px; height: 15px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          <span>Stems</span>
+        </button>
+
+        <button id="btn-open-lyrics" class="utility-btn" title="Letras Sincronizadas (Karaoke)">
+          <svg style="width: 15px; height: 15px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Letra</span>
+        </button>
+
+        <button id="btn-open-visualizer" class="utility-btn" title="Visualizador Audio-Reactivo Pantalla Completa">
+          <svg style="width: 15px; height: 15px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          </svg>
+        </button>
+
+        <!-- Volume Slider -->
+        <div class="volume-control-wrap">
+          <button id="btn-player-mute" class="player-btn" title="Silenciar">
+            <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+          </button>
+          <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.85">
+        </div>
+      </div>
+
+    </footer>
+
+    <!-- Synchronized Lyrics Drawer -->
+    <div id="lyrics-drawer" class="lyrics-drawer">
+      <div class="lyrics-drawer-header">
+        <div class="lyrics-drawer-title">
+          <svg style="width: 18px; height: 18px; color: var(--accent-purple);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+          </svg>
+          <span id="lyrics-drawer-song-title">Letras Sincronizadas</span>
+        </div>
+        <button id="lyrics-drawer-close" class="modal-close-btn">✕</button>
+      </div>
+      <div class="lyrics-scroll-container" id="lyrics-scroll-container">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+
+    <!-- Stem Splitter Live Mixer Modal -->
+    <div id="stem-mixer-modal" class="modal-backdrop">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg style="width: 20px; height: 20px; color: var(--accent-cyan);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span>Mezclador de Stems en Vivo (4 Canales)</span>
+          </div>
+          <button id="stem-mixer-close" class="modal-close-btn">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+            Ajusta los niveles de volumen independientes, silencia (Mute) o aísla (Solo) cada pista de audio en tiempo real.
+          </p>
+
+          <!-- Channel 1: Vocals -->
+          <div class="stem-channel-row">
+            <div class="stem-channel-info">
+              <div class="stem-icon-badge">🎤</div>
+              <div>
+                <div class="stem-title">Voces / Lead</div>
+                <div id="stem-val-vocals" style="font-size: 11px; color: var(--text-muted);">100%</div>
+              </div>
+            </div>
+            <input type="range" id="stem-slider-vocals" class="stem-slider" min="0" max="1.5" step="0.05" value="1.0">
+            <div class="stem-btn-group">
+              <button id="stem-mute-vocals" class="stem-btn">Mute</button>
+              <button id="stem-solo-vocals" class="stem-btn">Solo</button>
+            </div>
+          </div>
+
+          <!-- Channel 2: Drums -->
+          <div class="stem-channel-row">
+            <div class="stem-channel-info">
+              <div class="stem-icon-badge">🥁</div>
+              <div>
+                <div class="stem-title">Batería & Perc</div>
+                <div id="stem-val-drums" style="font-size: 11px; color: var(--text-muted);">100%</div>
+              </div>
+            </div>
+            <input type="range" id="stem-slider-drums" class="stem-slider" min="0" max="1.5" step="0.05" value="1.0">
+            <div class="stem-btn-group">
+              <button id="stem-mute-drums" class="stem-btn">Mute</button>
+              <button id="stem-solo-drums" class="stem-btn">Solo</button>
+            </div>
+          </div>
+
+          <!-- Channel 3: Bass -->
+          <div class="stem-channel-row">
+            <div class="stem-channel-info">
+              <div class="stem-icon-badge">🎸</div>
+              <div>
+                <div class="stem-title">Bajo / Sub-808</div>
+                <div id="stem-val-bass" style="font-size: 11px; color: var(--text-muted);">100%</div>
+              </div>
+            </div>
+            <input type="range" id="stem-slider-bass" class="stem-slider" min="0" max="1.5" step="0.05" value="1.0">
+            <div class="stem-btn-group">
+              <button id="stem-mute-bass" class="stem-btn">Mute</button>
+              <button id="stem-solo-bass" class="stem-btn">Solo</button>
+            </div>
+          </div>
+
+          <!-- Channel 4: Instruments -->
+          <div class="stem-channel-row">
+            <div class="stem-channel-info">
+              <div class="stem-icon-badge">🎹</div>
+              <div>
+                <div class="stem-title">Armonía & Pads</div>
+                <div id="stem-val-instruments" style="font-size: 11px; color: var(--text-muted);">100%</div>
+              </div>
+            </div>
+            <input type="range" id="stem-slider-instruments" class="stem-slider" min="0" max="1.5" step="0.05" value="1.0">
+            <div class="stem-btn-group">
+              <button id="stem-mute-instruments" class="stem-btn">Mute</button>
+              <button id="stem-solo-instruments" class="stem-btn">Solo</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-reset-mix" class="hero-secondary-btn" style="padding: 8px 16px;">Restablecer Mezcla</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile & Administrator Master Panel Modal -->
+    <div id="profile-admin-modal" class="modal-backdrop">
+      <div class="modal-container" style="max-width: 680px;">
+        <div class="profile-card-header">
+          <div class="profile-avatar-large">M</div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h2 id="profile-user-name" style="font-size: 22px; font-weight: 800; color: #ffffff;">Miguel</h2>
+              <span id="profile-role-badge" class="brand-badge" style="font-size: 11px; background: linear-gradient(135deg, #ef4444, #f59e0b); color: white;">👑 ADMIN MASTER</span>
+            </div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">miguel@sonora.ai • Miembro desde Octubre 2026</div>
+          </div>
+          <button id="profile-modal-close-btn" class="modal-close-btn" style="margin-left: auto;">✕</button>
+        </div>
+
+        <div class="modal-body" style="padding: 20px 0;">
+          <!-- User Stats Grid -->
+          <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+              <div id="profile-tokens-count" class="profile-stat-val" style="color: #34d399;">∞ Ilimitados</div>
+              <div class="profile-stat-lbl">Tokens Disponibles</div>
+            </div>
+            <div class="profile-stat-box">
+              <div id="profile-songs-count" class="profile-stat-val" style="color: #8b5cf6;">0</div>
+              <div class="profile-stat-lbl">Canciones Creadas</div>
+            </div>
+            <div class="profile-stat-box">
+              <div id="profile-favs-count" class="profile-stat-val" style="color: #ec4899;">18</div>
+              <div class="profile-stat-lbl">Canciones Favoritas</div>
+            </div>
+          </div>
+
+          <!-- ADMIN MASTER EXCLUSIVE SECTION -->
+          <div id="admin-master-section" class="admin-master-card">
+            <div class="admin-master-title">
+              <span>👑 Controles Exclusivos de Administrador</span>
+            </div>
+            <div style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5;">
+              Tienes control total sobre la economía de tokens, catálogo y bypass de créditos en SONORA AI.
+            </div>
+
+            <div class="switch-row" style="background: rgba(0, 0, 0, 0.4); margin-bottom: 12px;">
+              <div class="switch-label-wrap">
+                <span class="switch-title" style="color: #ffffff;">Tokens Ilimitados (Modo Dios)</span>
+                <span class="switch-desc">Permite crear canciones sin descontar tokens</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="admin-infinite-tokens-toggle" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+
+            <div class="admin-actions-row">
+              <button id="btn-admin-add-tokens" class="hero-secondary-btn" style="font-size: 11.5px; padding: 8px 14px; background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #34d399;">
+                +1.000 Tokens a mi cuenta
+              </button>
+              <button id="btn-admin-switch-role" class="hero-secondary-btn" style="font-size: 11.5px; padding: 8px 14px;">
+                Alternar Vista Usuario / Admin
+              </button>
+              <button id="btn-admin-reset-catalog" class="hero-secondary-btn" style="font-size: 11.5px; padding: 8px 14px;">
+                Restablecer Catálogo
+              </button>
+            </div>
+
+            <!-- Platform Metrics -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 11px; color: var(--text-muted); text-align: center;">
+              <div><strong style="color: #ffffff; display: block; font-size: 13px;">14.820</strong> Usuarios Registrados</div>
+              <div><strong style="color: #ffffff; display: block; font-size: 13px;">184.950</strong> Canciones Creadas</div>
+              <div><strong style="color: #34d399; display: block; font-size: 13px;">$4.890.000</strong> CLP WebPay</div>
+              <div><strong style="color: #06b6d4; display: block; font-size: 13px;">ONLINE</strong> Engine 48kHz v4.2</div>
+            </div>
+          </div>
+
+          <!-- User's Created Songs Section -->
+          <div style="padding: 0 24px;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px;">
+              Mis Canciones Creadas:
+            </div>
+            <div id="profile-user-songs-list">
+              <!-- Dynamically populated by profile-admin.js -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="hero-secondary-btn" onclick="window.sonoraProfileAdmin.close()">Cerrar Perfil</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIP Studio Chat Modal (Exclusive for SONORA STUDIO VIP Members) -->
+    <div id="vip-chat-modal" class="modal-backdrop">
+      <div class="modal-container" style="max-width: 760px; height: 680px; display: flex; flex-direction: column;">
+        <div class="modal-header" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(236, 72, 153, 0.15) 100%);">
+          <div class="modal-title" style="color: #fbbf24;">
+            <span>👑 SONORA VIP STUDIO CHAT</span>
+            <span style="font-size: 11px; padding: 2px 8px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; border-radius: 99px; color: #fde68a;">MÚSICA PROFESIONAL</span>
+          </div>
+          <button id="vip-chat-close-btn" class="modal-close-btn">✕</button>
+        </div>
+
+        <!-- Non-VIP Lock Invitation Screen (Shown if user has not unlocked VIP) -->
+        <div id="vip-lock-banner" class="vip-lock-banner" style="display: none; flex: 1;">
+          <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);">
+            👑
+          </div>
+          <h2 style="font-size: 24px; font-weight: 800; color: #ffffff;">Exclusivo para Miembros SONORA STUDIO VIP</h2>
+          <p style="font-size: 14px; color: var(--text-secondary); max-width: 480px; line-height: 1.6;">
+            Accede a conversaciones ilimitadas con ingenieros de mezcla y productores profesionales para pulir tus temas, resolver dudas de ecualización, armonía, masterización y estrategias de lanzamiento musical.
+          </p>
+          <button id="btn-unlock-vip-webpay" class="create-song-btn" style="width: auto; padding: 0 32px; height: 46px; background: linear-gradient(135deg, #f59e0b, #ec4899);">
+            💳 Desbloquear Modo VIP con WebPay
+          </button>
+        </div>
+
+        <!-- VIP Chat Interface (Active for Miguel and VIP Studio members) -->
+        <div id="vip-chat-container" class="vip-chat-container" style="flex: 1; display: flex; flex-direction: column;">
+          
+          <!-- Producer Selector Tabs -->
+          <div class="vip-producer-nav">
+            <div class="vip-producer-pill active" data-producer="alex">
+              <span>🎚️ Alex Rivera</span>
+              <small style="font-size: 10px; opacity: 0.7;">(Mezcla & Mastering)</small>
+            </div>
+            <div class="vip-producer-pill" data-producer="elena">
+              <span>🎹 Elena Vance</span>
+              <small style="font-size: 10px; opacity: 0.7;">(Composición & Armonía)</small>
+            </div>
+            <div class="vip-producer-pill" data-producer="shadow">
+              <span>🎤 DJ Shadow</span>
+              <small style="font-size: 10px; opacity: 0.7;">(Beatmaker Urbano)</small>
+            </div>
+          </div>
+
+          <!-- Messages Scroll View -->
+          <div id="vip-chat-messages" class="vip-chat-messages-scroll">
+            <!-- Messages populated by vip-chat.js -->
+          </div>
+
+          <!-- Quick Suggestion Chips -->
+          <div class="vip-quick-chips-row">
+            <div class="vip-quick-chip" data-prompt="¿Cómo hago para que mi bajo 808 tenga más pegada sin ensuciar la mezcla?">
+              🎛️ Pegada limpia en bajo 808
+            </div>
+            <div class="vip-quick-chip" data-prompt="¿Qué progresión de acordes me recomiendas para un hit pop emotivo?">
+              🎹 Progresión de acordes emotiva
+            </div>
+            <div class="vip-quick-chip" data-prompt="¿A cuántos LUFS debo masterizar mi canción para Spotify y YouTube?">
+              🔊 Nivel de Mastering LUFS
+            </div>
+            <div class="vip-quick-chip" data-prompt="¿Cómo puedo mejorar el swing de los hi-hats en un ritmo de dembow?">
+              🥁 Swing en hi-hats y dembow
+            </div>
+          </div>
+
+          <!-- Input Message Bar -->
+          <div class="vip-chat-input-bar">
+            <input type="text" id="vip-chat-input" class="vip-chat-input" placeholder="Pregunta sobre mezcla, acordes, sonido de bajos o producción musical...">
+            <button id="vip-chat-send-btn" class="vip-chat-send-btn">Enviar ↵</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- WebPay Plus Payment Gateway & Checkout Modal -->
+    <div id="webpay-modal" class="modal-backdrop">
+      <div class="webpay-modal-container">
+        
+        <!-- Header Banner -->
+        <div class="webpay-header-banner">
+          <div class="webpay-brand-tag">
+            <svg style="width: 26px; height: 26px; color: #34d399;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <div>
+              <div class="webpay-modal-title">Webpay Plus • Transbank</div>
+              <div class="webpay-modal-subtitle">Recarga segura de créditos SONORA Studio</div>
+            </div>
+          </div>
+          <button id="webpay-close-btn" class="modal-close-btn" style="color: #ffffff;">✕</button>
+        </div>
+
+        <!-- Step 1: Pack Selection & Payment Form -->
+        <div id="webpay-form-step">
+          <div style="padding: 16px 28px 0;">
+            <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.5;">
+              Selecciona tu pack de tokens para continuar creando canciones y exportando stems en alta fidelidad:
+            </p>
+          </div>
+
+          <!-- Packs Selection Grid -->
+          <div id="webpay-packs-container" class="webpay-packs-grid">
+            <!-- Dynamically populated by app.js -->
+          </div>
+
+          <!-- Payment Methods -->
+          <div class="webpay-methods-title">Método de Pago Autorizado:</div>
+          <div class="webpay-methods-grid">
+            <div class="webpay-method-pill active">
+              <span>💳 Webpay Plus</span>
+              <small style="font-size: 9.5px; color: var(--accent-emerald);">Débito / Redcompra</small>
+            </div>
+            <div class="webpay-method-pill">
+              <span>💎 Crédito</span>
+              <small style="font-size: 9.5px; color: var(--text-muted);">Hasta 12 cuotas</small>
+            </div>
+            <div class="webpay-method-pill">
+              <span>🤝 Mercado Pago</span>
+              <small style="font-size: 9.5px; color: var(--text-muted);">Saldo y transferencias</small>
+            </div>
+            <div class="webpay-method-pill">
+              <span>🌎 PayPal</span>
+              <small style="font-size: 9.5px; color: var(--text-muted);">USD Internacional</small>
+            </div>
+          </div>
+
+          <!-- Footer Action Button -->
+          <div class="modal-footer" style="padding: 18px 28px; background: var(--bg-tertiary);">
+            <div style="margin-right: auto; font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+              <span>🔒 Transacción cifrada TLS 256-bit</span>
+            </div>
+            <button id="btn-submit-webpay" class="create-song-btn" style="width: auto; padding: 0 28px; height: 44px; background: linear-gradient(135deg, #059669, #10b981);">
+              Pagar con Webpay Plus
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Processing Simulator -->
+        <div id="webpay-processing-step" class="webpay-processing-view" style="display: none;">
+          <div class="webpay-spinner"></div>
+          <h3 style="font-size: 17px; color: #ffffff; margin-top: 10px;">Conectando con Transbank Webpay Plus...</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); max-width: 380px;">
+            Validando autorización bancaria en los servidores seguros de Transbank. Por favor no cierres la ventana.
+          </p>
+        </div>
+
+        <!-- Step 3: Success Screen -->
+        <div id="webpay-success-step" class="webpay-success-view" style="display: none;">
+          <div class="webpay-success-icon">✓</div>
+          <h2 style="font-size: 22px; font-weight: 800; color: #ffffff;">¡Pago Aprobado con Éxito!</h2>
+          <div id="webpay-success-credits" style="font-size: 18px; font-weight: 700; color: #34d399;">
+            +500 Créditos Acreditados
+          </div>
+
+          <!-- Receipt Details -->
+          <div class="webpay-receipt-box">
+            <div class="webpay-receipt-row">
+              <span>Comercio:</span>
+              <strong>SONORA AI Studio Inc.</strong>
+            </div>
+            <div class="webpay-receipt-row">
+              <span>Medio de Pago:</span>
+              <strong>Webpay Plus (Redcompra / Débito)</strong>
+            </div>
+            <div class="webpay-receipt-row">
+              <span>Código de Autorización:</span>
+              <strong style="font-family: monospace;">TBK-849204</strong>
+            </div>
+            <div class="webpay-receipt-row">
+              <span>Estado:</span>
+              <strong style="color: #34d399;">Transacción Exitosa</strong>
+            </div>
+          </div>
+
+          <button id="webpay-success-close-btn" class="create-song-btn" style="width: 260px; height: 44px; background: linear-gradient(135deg, #059669, #10b981);">
+            Volver al Estudio y Crear Música
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Fullscreen Audio-Reactive Visualizer Overlay -->
+    <div id="visualizer-overlay" class="visualizer-overlay">
+      <div class="visualizer-nav">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 16px; font-weight: 800; color: #ffffff;">SONORA VISUALIZER</span>
+          <select id="visualizer-mode-select" class="custom-select" style="width: 180px; height: 36px;">
+            <option value="spectrum">Studio Spectrum Bars</option>
+            <option value="waveform">Sonic Oscilloscope</option>
+            <option value="orbital">Cosmic Orbital Pulse</option>
+          </select>
+        </div>
+        <button id="visualizer-close" class="modal-close-btn" style="color: #ffffff; font-size: 20px;">✕ Salir de Pantalla Completa</button>
+      </div>
+
+      <div class="visualizer-canvas-container">
+        <canvas id="visualizer-canvas" class="visualizer-canvas"></canvas>
+        <div class="visualizer-song-details">
+          <div class="playing-equalizer">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div>
+            <div id="visualizer-song-title" style="font-size: 16px; font-weight: 700; color: #ffffff;">Monaco en Llamas • BENITO AI</div>
+            <div style="font-size: 12px; color: var(--accent-cyan);">Mastering Dolby 48kHz Stereo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/tracks-data.js"></script>
+  <script src="js/vocal-synth.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/lyrics-engine.js"></script>
+  <script src="js/stem-mixer.js"></script>
+  <script src="js/vip-chat.js"></script>
+  <script src="js/profile-admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

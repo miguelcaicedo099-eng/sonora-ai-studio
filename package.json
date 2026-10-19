@@ -1,0 +1,29 @@
+{
+  "name": "sonora-ai-studio",
+  "version": "4.2.0",
+  "description": "SONORA AI - Suno-Grade Generative Music Studio on Vercel & Supabase",
+  "main": "api/generate.js",
+  "scripts": {
+    "start": "powershell -ExecutionPolicy Bypass -File start_server.ps1",
+    "dev": "powershell -ExecutionPolicy Bypass -File start_server.ps1",
+    "build": "echo Build complete",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "supabase:login": "supabase login",
+    "supabase:db:push": "supabase db push",
+    "gh:status": "gh auth status"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "keywords": [
+    "sonora",
+    "ai-music",
+    "suno",
+    "audio-generation",
+    "supabase",
+    "vercel"
+  ],
+  "author": "SONORA AI Team",
+  "license": "MIT"
+}
