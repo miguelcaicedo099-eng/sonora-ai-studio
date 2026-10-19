@@ -12,6 +12,10 @@ package-lock.json
 # Vercel
 .vercel/
 
+# Supabase
+supabase/.temp/
+.temp/
+
 # Logs & Temporary files
 *.log
 npm-debug.log*
