@@ -15,6 +15,8 @@ $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add($url)
 $listener.Start()
 
+Start-Process $url
+
 try {
     while ($listener.IsListening) {
         $response = $null
